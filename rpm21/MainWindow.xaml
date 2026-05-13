@@ -6,7 +6,112 @@
         xmlns:local="clr-namespace:rpm21"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Window.Resources>
+        <DataTemplate x:Key="AtelierCard">
+            <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="10" 
+                    Margin="10" Background="White" Width="280">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.1"/>
+                </Border.Effect>
+                <StackPanel>
+                    <!-- Фото через Image с прямым путем -->
+                    <Image Source="{Binding PhotoPath}" 
+                           Height="180"  
+                           />
+                    <Border Background="#2C3E50" CornerRadius="0,0,10,10">
+                        <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="Bold" 
+                                   Foreground="White" TextAlignment="Center" 
+                                   TextWrapping="Wrap" Margin="10,8"/>
+                    </Border>
+                    <StackPanel Margin="12">
+                        <TextBlock Text="{Binding Address}" Foreground="#34495E" 
+                                   TextWrapping="Wrap" Margin="0,5"/>
+                        <TextBlock Text="{Binding Phone}" Foreground="#7F8C8D" Margin="0,5"/>
+                        <TextBlock Text="⭐ Рейтинг: 4.8" Foreground="#F39C12" Margin="0,5"/>
+                    </StackPanel>
+                    <Button Content="📋 Услуги и цены" Margin="12,5,12,15" Height="32"
+                            Click="BtnServices_Click" Tag="{Binding}" 
+                            Background="#3498DB" Foreground="White" 
+                            Cursor="Hand" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель -->
+        <Border Background="#2C3E50">
+            <Grid>
+                <TextBlock Text="👗 СИСТЕМА УПРАВЛЕНИЯ АТЕЛЬЕ" 
+                           FontSize="16" FontWeight="Bold" Foreground="White" 
+                           VerticalAlignment="Center" Margin="20,0,0,0"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                            VerticalAlignment="Center" Margin="0,0,20,0">
+                    <TextBlock x:Name="txtUserInfo" Foreground="White" 
+                               VerticalAlignment="Center" Margin="0,0,15,0"/>
+                    <Button x:Name="btnLogout" Content="🚪 Выход" Width="80" Height="30"
+                            Click="BtnLogout_Click" Background="#E74C3C" Foreground="White"
+                            Cursor="Hand"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Панель поиска и управления -->
+        <Border Grid.Row="1" Background="#ECF0F1" Padding="10">
+            <WrapPanel>
+                <TextBox x:Name="txtSearch" Width="220" Height="32" Margin="5" 
+                         ToolTip="Поиск по названию или адресу"/>
+                <Button x:Name="btnSearch" Content="🔍 Найти" Width="70" Height="32" Margin="5" 
+                        Click="BtnSearch_Click" Background="#3498DB" Foreground="White"
+                        Cursor="Hand"/>
+
+                <ComboBox x:Name="cbFilter" Width="150" Height="32" Margin="5"
+                          SelectionChanged="CbFilter_SelectionChanged"/>
+
+                <Button x:Name="btnReset" Content="🔄 Сброс" Width="70" Height="32" Margin="5" 
+                        Click="BtnReset_Click" Background="#95A5A6" Foreground="White"
+                        Cursor="Hand"/>
+
+                <Separator Width="1" Background="#BDC3C7" Margin="10,5"/>
+
+                <Button x:Name="btnAdd" Content="➕ Добавить" Width="90" Height="32" Margin="5"
+                        Click="BtnAdd_Click" Background="#27AE60" Foreground="White"
+                        Cursor="Hand"/>
+                <Button x:Name="btnEdit" Content="✏️ Редактировать" Width="100" Height="32" Margin="5"
+                        Click="BtnEdit_Click" Background="#F39C12" Foreground="White"
+                        Cursor="Hand"/>
+                <Button x:Name="btnDelete" Content="❌ Удалить" Width="80" Height="32" Margin="5"
+                        Click="BtnDelete_Click" Background="#E74C3C" Foreground="White"
+                        Cursor="Hand"/>
+            </WrapPanel>
+        </Border>
+
+        <!-- ListView -->
+        <ListView x:Name="lvAteliers" Grid.Row="2" 
+                  ItemTemplate="{StaticResource AtelierCard}"
+                  SelectionChanged="LvAteliers_SelectionChanged"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="#F5F5F5">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center" Margin="10"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <!-- Статус бар -->
+        <StatusBar Grid.Row="3" Background="#2C3E50" Foreground="White">
+            <StatusBarItem>
+                <TextBlock x:Name="txtStatus" Text="Готов к работе"/>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>
